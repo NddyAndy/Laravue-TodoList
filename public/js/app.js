@@ -42698,6 +42698,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -42705,7 +42708,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             list: [],
             task: {
                 id: '',
-                body: ''
+                body: '',
+                completed: ''
             }
         };
     },
@@ -42733,11 +42737,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 return console.error(err);
             });
         },
-        deleteTask: function deleteTask(id) {
+        completeTask: function completeTask(id) {
             var _this3 = this;
 
-            axios.delete('api/tasks/' + id).then(function (res) {
+            axios.patch('api/tasks/' + id).then(function (res) {
                 _this3.fetchTaskList();
+            }).catch(function (err) {
+                return console.error(err);
+            });
+        },
+        deleteTask: function deleteTask(id) {
+            var _this4 = this;
+
+            axios.delete('api/tasks/' + id).then(function (res) {
+                _this4.fetchTaskList();
             }).catch(function (err) {
                 return console.error(err);
             });
@@ -42810,7 +42823,7 @@ var render = function() {
         _vm._v(" "),
         _vm._l(_vm.list, function(task, index) {
           return _c("li", { staticClass: "list-group-item" }, [
-            _vm._v("\n             " + _vm._s(task.body) + "\n             "),
+            _vm._v("\n             " + _vm._s(task.body) + " \n             "),
             _c(
               "button",
               {
@@ -42822,7 +42835,29 @@ var render = function() {
                 }
               },
               [_vm._v("Delete")]
-            )
+            ),
+            _vm._v(" "),
+            task.completed == false
+              ? _c(
+                  "button",
+                  {
+                    staticClass: "btn btn-primary btn-xs pull-right",
+                    on: {
+                      click: function($event) {
+                        _vm.completeTask(task.id)
+                      }
+                    }
+                  },
+                  [_vm._v("Complete this task")]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            task.completed == true
+              ? _c("span", {
+                  staticClass: "glyphicon glyphicon-ok pull-right",
+                  attrs: { "aria-hidden": "true" }
+                })
+              : _vm._e()
           ])
         })
       ],

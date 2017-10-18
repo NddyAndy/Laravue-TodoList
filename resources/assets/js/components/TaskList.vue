@@ -14,8 +14,11 @@
         <ul class="list-group">
             <li v-if='list.length === 0'>There are no tasks yet!</li>
             <li class="list-group-item" v-for="(task, index) in list">
-                 {{ task.body }}
-                 <button @click="deleteTask(task.id)" class="btn btn-danger btn-xs pull-right">Delete</button>
+                 {{ task.body }} 
+                 <button @click="deleteTask(task.id)"  class="btn btn-danger btn-xs pull-right">Delete</button>
+                 
+                 <button @click="completeTask(task.id)" v-if='task.completed == false' class="btn btn-primary btn-xs pull-right">Complete this task</button>
+                 <span v-if='task.completed == true'  class="glyphicon glyphicon-ok pull-right" aria-hidden="true"></span>
             </li>
         </ul>
     </div>
@@ -29,7 +32,8 @@
                 list: [],
                 task: {
                     id: '',
-                    body: ''
+                    body: '',
+                    completed: ''
                 }
             };
         },
@@ -54,7 +58,15 @@
                     })
                     .catch((err) => console.error(err));
             },
- 
+            
+              completeTask(id) {
+                axios.patch('api/tasks/' + id)
+                    .then((res) => {
+                        this.fetchTaskList()
+                    })
+                    .catch((err) => console.error(err));
+            },
+
             deleteTask(id) {
                 axios.delete('api/tasks/' + id)
                     .then((res) => {
