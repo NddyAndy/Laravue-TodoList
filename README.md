@@ -8,8 +8,7 @@ It Has a button for completing tasks once you are done
 it has a button for deleting tasks if you dont need them anymore
 
 
-
-Contributing
+# Contributing
 <hr />
 
 <ul>
